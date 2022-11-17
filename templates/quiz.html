@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <Title>Flag Quiz</Title>
+    </head>
+    <body>
+        <h1>Hello {{username}}, Here is your quiz</h1>
+        <form action="/result" method="post">
+            {% for question in questions_list%}
+            <h4>
+                <img
+                  src="https://flagcdn.com/192x144/{{question.que_image}}.png"
+                  width="192"
+                  height="144">
+            </h4>
+             <input type="radio" name="{{question.queId}}" value="{{question.option1}}"> {{question.option1}}
+             <input type="radio" name="{{question.queId}}" value="{{question.option2}}"> {{question.option2}}
+             <input type="radio" name="{{question.queId}}" value="{{question.option3}}"> {{question.option3}}
+             <input type="radio" name="{{question.queId}}" value="{{question.option4}}"> {{question.option4}}
+
+             <input type="hidden" name="username" value="{{username}}" formaction="">
+            {% endfor %}
+            <br> <br>
+            <input type="submit" name="Submit" value="submit">
+
+        </form>
+    </body>
+</html>
