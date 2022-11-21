@@ -1,28 +1,94 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <Title>Flag Quiz</Title>
-    </head>
-    <body>
-        <h1>Hello {{username}}, Here is your quiz</h1>
-        <form action="/result" method="post">
-            {% for question in questions_list%}
-            <h4>
-                <img
-                  src="https://flagcdn.com/192x144/{{question.que_image}}.png"
-                  width="192"
-                  height="144">
-            </h4>
-             <input type="radio" name="{{question.queId}}" value="{{question.option1}}"> {{question.option1}}
-             <input type="radio" name="{{question.queId}}" value="{{question.option2}}"> {{question.option2}}
-             <input type="radio" name="{{question.queId}}" value="{{question.option3}}"> {{question.option3}}
-             <input type="radio" name="{{question.queId}}" value="{{question.option4}}"> {{question.option4}}
+{% extends "base.html" %}
+{% block title %}Flag-a-droit{% endblock %}
+{% block content %}
+<body>
+<h1>Hello {{username}}, Here is your quiz</h1>
+<div class="container mt-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10 col-lg-10">
+            <div class="border">
+                <div class="question bg-white p-3 border-bottom">
+                    <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                        <h4>Flag Quiz</h4></div>
+                </div>
+                <form action="/result" method="post">
 
-             <input type="hidden" name="username" value="{{username}}" formaction="">
-            {% endfor %}
-            <br> <br>
-            <input type="submit" name="Submit" value="submit">
+                    {% for question in questions_list%}
+                    <div class="flagQuestions">
+                        <div class="question bg-white p-3 border-bottom">
+                            <div class="d-flex flex-row align-items-center question-title">
+                                <h3 class="text-danger">Q.</h3>
+                                <img
+                                        src="https://flagcdn.com/192x144/{{question.que_image}}.png"
+                                        width="192"
+                                        height="144">
+                            </div>
+                            <div class="ans ml-2">
+                                <label class="radio">
+                                    <input type="radio" name="{{question.queId}}" value="{{question.option1}}"> <span>{{question.option1}}</span>
+                                </label>
+                            </div>
+                            <div class="ans ml-2">
+                                <label class="radio">
+                                    <input type="radio" name="{{question.queId}}" value="{{question.option2}}"> <span>{{question.option2}}</span>
+                                </label>
+                            </div>
+                            <div class="ans ml-2">
+                                <label class="radio">
+                                    <input type="radio" name="{{question.queId}}" value="{{question.option3}}"> <span>{{question.option3}}</span>
+                                </label>
 
-        </form>
-    </body>
-</html>
+                            </div>
+                            <div class="ans ml-2">
+                                <label class="radio">
+                                    <input type="radio" name="{{question.queId}}" value="{{question.option4}}"> <span>{{question.option4}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
+                            <button class="btn btn-primary d-flex align-items-center btn-danger" type="button"
+                                    onclick="plusQuestions(-1)"><i
+                                    class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;Previous
+                            </button>
+                            <button class="btn btn-primary border-success align-items-center btn-success btn-next"
+                                    type="button" onclick="plusQuestions(1)">Next<i
+                                    class="fa fa-angle-right ml-2"></i></button>
+                            <input class="btn-submit" type="submit" name="Submit" value="submit">
+                        </div>
+                    </div>
+                    <input type="hidden" name="username" value="{{username}}" formaction="">
+
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    let questionIndex = 1;
+    showQuestions(questionIndex);
+
+    function plusQuestions(n) {
+        showQuestions(questionIndex += n);
+    }
+
+    function showQuestions(n) {
+        let i;
+        let questions = document.getElementsByClassName("flagQuestions");
+        let btn_next = document.getElementsByClassName("btn-next");
+        let btn_submit = document.getElementsByClassName("btn-submit")
+        for (i = 0; i < questions.length; i++) {
+            questions[i].style.display = "none";
+            btn_submit[i].style.display = "none";
+            btn_next[i].style.display = "block"
+        }
+        questions[questionIndex - 1].style.display = "block";
+        if(questionIndex == questions.length)
+        {
+            btn_submit[questionIndex-1].style.display = "block";
+            btn_next[questionIndex-1].style.display = "none"
+        }
+    }
+</script>
+</body>
+{% endblock %}

@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <Title>Flag Quiz</Title>
-    </head>
-    <body>
-        <h1>Welcome to the quiz</h1>
-        <h2>PLease enter a username</h2>
-        <form action="/quiz", method="post">
-            <input type="text" name="user">
-            <br><br>
-            <input type="submit" name="username">
-        </form>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Flag-a-droit{% endblock %}
+{% block content %}
+<body>
+<div class=".container-fluid">
+<form action="/quiz" , method="post" class="col-lg-6 offset-lg-3 ">
+    <div class="form-group row justify-content-center align-items-center">
+        <label for="user">Please enter Player name</label>
+        <input type="text" class="form-control" name="user" id="user" placeholder="Enter Player Name" required>
+        <br>
+        <br>
+        <input type="submit" value="Start Game">
+    </div>
+</form>
+    </div>
+</body>
+{% endblock %}
