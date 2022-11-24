@@ -1,6 +1,33 @@
 import random
 from flask import Flask, render_template, request
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
 application = Flask(__name__)
+
+# adding configuration for using a sqlite database
+application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+# Creating an SQLAlchemy instance
+db = SQLAlchemy(application)
+
+migrate = Migrate(application, db)
+
+# Models
+class Scores(db.Model):
+    # Id : Field which stores unique id for every row in
+    # database table.
+    # first_name: Used to store the first name if the user
+    # last_name: Used to store last name of the user
+    # Age: Used to store the age of the user
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=False, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+
+    # repr method represents how one object of this datatable
+    # will look like
+    def __repr__(self):
+        return f"Name : {self.name}, Score: {self.score}"
 
 class Quiz:
     queId = ""
@@ -391,6 +418,9 @@ def result():
             points = points + 5
     username = request.form['username']
     usernameDict.update({username:points})
+    p = Scores(name=username, score=points)
+    db.session.add(p)
+    db.session.commit()
     return render_template("result.html", usernameDict = usernameDict)
 
 

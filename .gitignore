@@ -1,0 +1,9 @@
+
+*.db
+__pycache__/app.cpython-310.pyc
+.idea/dataSources/1b81aff4-bb80-490b-be94-9eb6620088e2.xml
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/AWSProj.iml
+*.iml
+.idea/AWSProj.iml
