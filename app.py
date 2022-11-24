@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+numberOfQuestions = 10
 application = Flask(__name__)
 
 # adding configuration for using a sqlite database
@@ -13,21 +14,19 @@ db = SQLAlchemy(application)
 
 migrate = Migrate(application, db)
 
+
 # Models
 class Scores(db.Model):
-    # Id : Field which stores unique id for every row in
-    # database table.
-    # first_name: Used to store the first name if the user
-    # last_name: Used to store last name of the user
-    # Age: Used to store the age of the user
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=False, nullable=False)
     score = db.Column(db.Integer, nullable=False)
+    correctAns = db.Column(db.Integer, nullable=False)
 
     # repr method represents how one object of this datatable
     # will look like
     def __repr__(self):
         return f"Name : {self.name}, Score: {self.score}"
+
 
 class Quiz:
     queId = ""
@@ -56,6 +55,7 @@ class Quiz:
             return self.option3
         if self.correctOption == self.option4:
             return self.option4
+
 
 codeDict = {
     "ad": "Andorra",
@@ -373,7 +373,46 @@ ShuffledCodeDict = dict()
 for key in keys:
     ShuffledCodeDict.update({key: codeDict[key]})
 
-listOfCountries = ['Afghanistan', 'Aland Islands', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola', 'Anguilla', 'Antarctica', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia, Plurinational State of', 'Bonaire, Sint Eustatius and Saba', 'Bosnia and Herzegovina', 'Botswana', 'Bouvet Island', 'Brazil', 'British Indian Ocean Territory', 'Brunei Darussalam', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands', 'Central African Republic', 'Chad', 'Chile', 'China', 'Christmas Island', 'Cocos (Keeling) Islands', 'Colombia', 'Comoros', 'Congo', 'Congo, The Democratic Republic of the', 'Cook Islands', 'Costa Rica', "Côte d'Ivoire", 'Croatia', 'Cuba', 'Curaçao', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Falkland Islands (Malvinas)', 'Faroe Islands', 'Fiji', 'Finland', 'France', 'French Guiana', 'French Polynesia', 'French Southern Territories', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guadeloupe', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Heard Island and McDonald Islands', 'Holy See (Vatican City State)', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', "Korea, Democratic People's Republic of", 'Korea, Republic of', 'Kuwait', 'Kyrgyzstan', "Lao People's Democratic Republic", 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macao', 'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Martinique', 'Mauritania', 'Mauritius', 'Mayotte', 'Mexico', 'Micronesia, Federated States of', 'Moldova, Republic of', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue', 'Norfolk Island', 'Northern Mariana Islands', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestinian Territory, Occupied', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Pitcairn', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Réunion', 'Romania', 'Russian Federation', 'Rwanda', 'Saint Barthélemy', 'Saint Helena, Ascension and Tristan da Cunha', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Martin (French part)', 'Saint Pierre and Miquelon', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Sint Maarten (Dutch part)', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Georgia and the South Sandwich Islands', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'South Sudan', 'Svalbard and Jan Mayen', 'Swaziland', 'Sweden', 'Switzerland', 'Syrian Arab Republic', 'Taiwan, Province of China', 'Tajikistan', 'Tanzania, United Republic of', 'Thailand', 'Timor-Leste', 'Togo', 'Tokelau', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'United States Minor Outlying Islands', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Venezuela, Bolivarian Republic of', 'Viet Nam', 'Virgin Islands, British', 'Virgin Islands, U.S.', 'Wallis and Futuna', 'Yemen', 'Zambia', 'Zimbabwe']
+listOfCountries = ['Afghanistan', 'Aland Islands', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola',
+                   'Anguilla', 'Antarctica', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia',
+                   'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium',
+                   'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia, Plurinational State of',
+                   'Bonaire, Sint Eustatius and Saba', 'Bosnia and Herzegovina', 'Botswana', 'Bouvet Island', 'Brazil',
+                   'British Indian Ocean Territory', 'Brunei Darussalam', 'Bulgaria', 'Burkina Faso', 'Burundi',
+                   'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands', 'Central African Republic', 'Chad',
+                   'Chile', 'China', 'Christmas Island', 'Cocos (Keeling) Islands', 'Colombia', 'Comoros', 'Congo',
+                   'Congo, The Democratic Republic of the', 'Cook Islands', 'Costa Rica', "Côte d'Ivoire", 'Croatia',
+                   'Cuba', 'Curaçao', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica',
+                   'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia',
+                   'Ethiopia', 'Falkland Islands (Malvinas)', 'Faroe Islands', 'Fiji', 'Finland', 'France',
+                   'French Guiana', 'French Polynesia', 'French Southern Territories', 'Gabon', 'Gambia', 'Georgia',
+                   'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guadeloupe', 'Guam', 'Guatemala',
+                   'Guernsey', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Heard Island and McDonald Islands',
+                   'Holy See (Vatican City State)', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia',
+                   'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan',
+                   'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', "Korea, Democratic People's Republic of",
+                   'Korea, Republic of', 'Kuwait', 'Kyrgyzstan', "Lao People's Democratic Republic", 'Latvia',
+                   'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macao',
+                   'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta',
+                   'Marshall Islands', 'Martinique', 'Mauritania', 'Mauritius', 'Mayotte', 'Mexico',
+                   'Micronesia, Federated States of', 'Moldova, Republic of', 'Monaco', 'Mongolia', 'Montenegro',
+                   'Montserrat', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands',
+                   'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue', 'Norfolk Island',
+                   'Northern Mariana Islands', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestinian Territory, Occupied',
+                   'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Pitcairn', 'Poland', 'Portugal',
+                   'Puerto Rico', 'Qatar', 'Réunion', 'Romania', 'Russian Federation', 'Rwanda', 'Saint Barthélemy',
+                   'Saint Helena, Ascension and Tristan da Cunha', 'Saint Kitts and Nevis', 'Saint Lucia',
+                   'Saint Martin (French part)', 'Saint Pierre and Miquelon', 'Saint Vincent and the Grenadines',
+                   'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles',
+                   'Sierra Leone', 'Singapore', 'Sint Maarten (Dutch part)', 'Slovakia', 'Slovenia', 'Solomon Islands',
+                   'Somalia', 'South Africa', 'South Georgia and the South Sandwich Islands', 'Spain', 'Sri Lanka',
+                   'Sudan', 'Suriname', 'South Sudan', 'Svalbard and Jan Mayen', 'Swaziland', 'Sweden', 'Switzerland',
+                   'Syrian Arab Republic', 'Taiwan, Province of China', 'Tajikistan', 'Tanzania, United Republic of',
+                   'Thailand', 'Timor-Leste', 'Togo', 'Tokelau', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey',
+                   'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates',
+                   'United Kingdom', 'United States', 'United States Minor Outlying Islands', 'Uruguay', 'Uzbekistan',
+                   'Vanuatu', 'Venezuela, Bolivarian Republic of', 'Viet Nam', 'Virgin Islands, British',
+                   'Virgin Islands, U.S.', 'Wallis and Futuna', 'Yemen', 'Zambia', 'Zimbabwe']
 
 listOfQuestions = []
 
@@ -381,47 +420,86 @@ queCount = 0
 
 for key, value in ShuffledCodeDict.items():
     queCount = queCount + 1
-    if queCount==21:
+    if queCount == numberOfQuestions + 1:
         break
     choice1 = random.choice(listOfCountries)
     choice2 = random.choice(listOfCountries)
     choice3 = random.choice(listOfCountries)
     choice4 = value
-    listOfChoices = [choice1,choice2,choice3,choice4]
+    listOfChoices = [choice1, choice2, choice3, choice4]
     firstOption = random.choice(listOfChoices)
     listOfChoices.remove(firstOption)
     secondOption = random.choice(listOfChoices)
     listOfChoices.remove(secondOption)
     thirdOption = random.choice(listOfChoices)
     listOfChoices.remove(thirdOption)
-    listOfQuestions.append(Quiz(key, key,  firstOption , secondOption , thirdOption , listOfChoices[0], value))
+    listOfQuestions.append(Quiz(key, key, firstOption, secondOption, thirdOption, listOfChoices[0], value))
 
 usernameDict = {}
+
+
 @application.route("/")
 def user():
     return render_template("username.html")
 
-@application.route("/quiz", methods = ['POST', 'GET'])
+
+@application.route("/quiz", methods=['POST', 'GET'])
 def index():
     username = request.form['user']
     print(username)
-    usernameDict.update({username:0})
-    return render_template("quiz.html", questions_list = listOfQuestions, username = username)
+    usernameDict.update({username: 0})
+    return render_template("quiz.html", questions_list=listOfQuestions, username=username)
 
-@application.route("/result" , methods = ['POST', 'GET'])
+
+def getComments(numberOfCorrectAns):
+    percentage = (numberOfCorrectAns / numberOfQuestions) * 100
+    comments = ""
+    match percentage:
+        case num if num in range(80, 101):
+            comments = "Awesome Work!!!"
+        case num if num in range(60, 80):
+            comments = "Good Job!!!"
+        case num if num in range(40, 60):
+            comments = "Keep trying harder"
+        case num if num in range(0, 40):
+            comments = "Better luck next time..."
+    return comments
+
+
+@application.route("/result", methods=['POST', 'GET'])
 def result():
-    points = 0
+    num_CorrectAnswers = 0
     for que in listOfQuestions:
         selectedOption = request.form[que.queId]
         correctOption = que.getCorrectAnswer()
         if selectedOption == correctOption:
-            points = points + 5
+            num_CorrectAnswers += 1
+
     username = request.form['username']
-    usernameDict.update({username:points})
-    p = Scores(name=username, score=points)
-    db.session.add(p)
-    db.session.commit()
-    return render_template("result.html", usernameDict = usernameDict)
+    record = Scores.query.filter_by(name=username).first()
+    if record:
+        record.score = num_CorrectAnswers * 5
+        record.correctAns = num_CorrectAnswers
+        db.session.merge(record)
+        db.session.commit()
+        print("Updated record")
+    else:
+        provider = Scores(name=username, score=num_CorrectAnswers * 5, correctAns=num_CorrectAnswers)
+        db.session.add(provider)
+        db.session.commit()
+        print("New record")
+
+    userScoreRecord = Scores.query.filter_by(name=username).first()
+    allUserRecords = Scores.query.all()
+    count = 0
+    sumScores = 0
+    for u in allUserRecords:
+        sumScores += u.score
+        count += 1
+    averageScore = sumScores / count
+    return render_template("result.html", username=userScoreRecord.name, score=userScoreRecord.score,
+                           correctAns=userScoreRecord.correctAns, numberOfQuestions=numberOfQuestions,
+                           averageScore=averageScore, comments=getComments(userScoreRecord.correctAns))
 
 
 if __name__ == "__main__":
