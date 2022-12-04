@@ -1,5 +1,5 @@
 body{
-    background-color:#eee;
+    background-color:floralwhite;
 }
 
 label.radio {
@@ -15,21 +15,22 @@ label.radio input {
 }
 
 label.radio span {
-  padding: 4px 0px;
+  padding: 4px 4px;
   border: 1px solid red;
   display: inline-block;
   color: red;
-  width: 100px;
+  min-width: 100px;
   text-align: center;
   border-radius: 3px;
   margin-top: 7px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 label.radio input:checked + span {
   border-color: red;
   background-color: red;
-  color: #fff;
+  color: white;
 }
 
 .ans {
@@ -46,12 +47,6 @@ label.radio input:checked + span {
   box-shadow: none !important;
 }
 
-/*-----*/
-body{
-background-color:#eee;
-
-}
-
 .card{
   width: 380px;
   border: none;
@@ -62,7 +57,6 @@ background-color:#eee;
 }
 
 .score{
-
       background-color: #B9F6CA;
 }
 .heading1{
@@ -79,4 +73,14 @@ background-color:#eee;
 
   font-size: 30px;
   font-weight:700;
+}
+
+#flagNavbar
+{
+  background-color: skyblue;
+}
+
+label
+{
+  margin-top: 0.5rem;
 }

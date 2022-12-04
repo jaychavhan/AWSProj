@@ -3,15 +3,16 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="icon" type="image/x-icon" href="../static/flag-icon.png"/>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
 <!-- Image and text -->
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light" id="flagNavbar">
   <a class="navbar-brand" href="#">
     <img src={{url_for('static', filename='flag-icon.png')}} width="30" height="30" class="d-inline-block align-top" alt="">
-    Flag-a-droit
+    <b>Flag-a-droit</b>
   </a>
 </nav>
 

@@ -7,11 +7,9 @@ numberOfQuestions = 10
 application = Flask(__name__)
 
 # adding configuration for using a sqlite database
-application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-
-# Creating an SQLAlchemy instance
+#application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:admin#123@flag-a-droit.c8aqn26zl72u.us-east-1.rds.amazonaws.com:3306/flagscores'
 db = SQLAlchemy(application)
-
 migrate = Migrate(application, db)
 
 
@@ -478,13 +476,13 @@ def result():
     username = request.form['username']
     record = Scores.query.filter_by(name=username).first()
     if record:
-        record.score = num_CorrectAnswers * 5
+        record.score = num_CorrectAnswers * 10
         record.correctAns = num_CorrectAnswers
         db.session.merge(record)
         db.session.commit()
         print("Updated record")
     else:
-        provider = Scores(name=username, score=num_CorrectAnswers * 5, correctAns=num_CorrectAnswers)
+        provider = Scores(name=username, score=num_CorrectAnswers * 10, correctAns=num_CorrectAnswers)
         db.session.add(provider)
         db.session.commit()
         print("New record")
