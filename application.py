@@ -7,8 +7,7 @@ numberOfQuestions = 10
 application = Flask(__name__)
 
 # adding configuration for using a sqlite database
-#application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:admin#123@flag-a-droit.c8aqn26zl72u.us-east-1.rds.amazonaws.com:3306/flagscores'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:admin1234@flagadroitdb.c9pp3gwuqypj.us-east-1.rds.amazonaws.com:3306/flagscores'
 db = SQLAlchemy(application)
 migrate = Migrate(application, db)
 
@@ -452,14 +451,13 @@ def index():
 def getComments(numberOfCorrectAns):
     percentage = (numberOfCorrectAns / numberOfQuestions) * 100
     comments = ""
-    match percentage:
-        case num if num in range(80, 101):
-            comments = "Awesome Work!!!"
-        case num if num in range(60, 80):
-            comments = "Good Job!!!"
-        case num if num in range(40, 60):
-            comments = "Keep trying harder"
-        case num if num in range(0, 40):
+    if 80 <= percentage < 101:
+        comments = "Awesome Work!!!"
+    elif 60 <= percentage < 80:
+        comments = "Good Job!!!"
+    elif 40 <= percentage < 60:
+        comments = "Keep trying harder"
+    elif 0 <= percentage < 40:
             comments = "Better luck next time..."
     return comments
 
